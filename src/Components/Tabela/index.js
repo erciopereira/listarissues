@@ -43,8 +43,13 @@ export function Tabela() {
         state => state.ListaIssuesReducer.filtroIssues
     );
 
+    const semDadosFiltroReducer = useSelector(
+        state => state.ListaIssuesReducer.semDadosFiltro
+    );
+
     useEffect(() => {
-        if (filtroIssuesReducer.length > 0) {
+        if (filtroIssuesReducer.length > 0 ||
+            (filtroIssuesReducer.length === 0 && semDadosFiltroReducer)) {
             setDataIssues(filtroIssuesReducer);
         } else {
             setDataIssues(dadosIssuesReducer);

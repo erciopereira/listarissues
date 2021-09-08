@@ -1,21 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconeFiltro from '@material-ui/icons/FilterList';
-import IconeOpen from '@material-ui/icons/Adjust';
-import IconeClose from '@material-ui/icons/Check';
-import IconeRemover from '@material-ui/icons/HighlightOff';
 import { CircularProgress } from '@material-ui/core';
 import useApi from '../../consultaAPI/API';
 import { Container } from './styles';
 import { Tabela } from '../../Components/Tabela';
+import { Filtros } from '../../Components/Filtros';
 
 export function Home() {
     const api = useApi();
     const dispatch = useDispatch();
-
-    const dadosIssuesReducer = useSelector(
-        state => state.ListaIssuesReducer.listaIssues
-    );
 
     const mensagemErroRequisicao = useSelector(
         state => state.ListaIssuesReducer.erroBuscaIssues
@@ -27,8 +20,7 @@ export function Home() {
     const pegarUltimaAtualizacao = JSON.parse(
         localStorage.getItem('dataUltimaAtualizacao')
     )
-
-    const [filtroSelecionado, setFiltroSelecionado] = useState('');
+    
     const [ultimaAtualizacao, setUltimaAtualizacao] = useState('');
     const [carregando, setCarregando] = useState(true);
     const [atualizarDados, setAtualizarDados] = useState(false);
@@ -96,33 +88,6 @@ export function Home() {
         }
     }, [atualizarDados])
 
-    const abrirFecharModalFiltro = () => {
-        const modal = document.querySelector('.modal-filtros')
-        if (modal.classList.contains('modal-aberto')) {
-            modal.classList.remove('modal-aberto');
-        } else {
-            modal.classList.add('modal-aberto');
-        }
-    }
-
-    const selecionarFiltro = (status, filtro, cor) => {
-        setFiltroSelecionado({ texto: filtro, color: cor });
-        abrirFecharModalFiltro();
-        const filtrar = dadosIssuesReducer.filter((item) => item.status === status);
-        dispatch({
-            type: 'SET_FILTRO_ISSUES',
-            payload: filtrar,
-        });
-    }
-
-    const limparFiltro = () => {
-        dispatch({
-            type: 'SET_FILTRO_ISSUES',
-            payload: [],
-        });
-        setFiltroSelecionado('');
-    }
-
     return (
         <Container>
             {carregando ? (
@@ -133,25 +98,7 @@ export function Home() {
             ) : (
                 <>
                     <div className="area-cabecalho">
-                        <div className="area-filtros">
-                            <IconeFiltro style={{ cursor: 'pointer' }} onClick={() => abrirFecharModalFiltro()} />
-                            <div className="modal-filtros">
-                                <div className="tipos-filtros" onClick={() => selecionarFiltro('open', 'Issues abertos', '#ff9900')}>
-                                    <IconeOpen />
-                                    <span>Issues abertos</span>
-                                </div>
-                                <div className="tipos-filtros" onClick={() => selecionarFiltro('closed', 'Issues fechados', '#5fb12b')}>
-                                    <IconeClose />
-                                    <span>Issues fechados</span>
-                                </div>
-                            </div>
-                            {filtroSelecionado !== '' &&
-                                <div className="filtro-selecionado" style={{ backgroundColor: filtroSelecionado.color }}>
-                                    <span>{filtroSelecionado.texto}</span>
-                                    <IconeRemover onClick={() => limparFiltro()} />
-                                </div>
-                            }
-                        </div>
+                        <Filtros />
                         <button onClick={() => setAtualizarDados(true)}>Atualizar dados</button>
                         <div>
                             <span>Última atualização: </span>
