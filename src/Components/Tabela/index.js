@@ -54,6 +54,7 @@ export function Tabela() {
         } else {
             setDataIssues(dadosIssuesReducer);
         }
+        setPagina(0);
     }, [dadosIssuesReducer, filtroIssuesReducer])
 
     const alterarPagina = (event, novaPagina) => {
@@ -65,9 +66,16 @@ export function Tabela() {
         setPagina(0);
     }
 
+    const number = 956
+    if (number % 2 == 0) {
+        console.log("Par")
+    } else {
+        console.log('impar')
+    }
+
     return (
         <>
-            <TableContainer style={{ minHeight: '600px' }}>
+            <TableContainer style={{ height: 'calc(100vh - 165px)' }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -88,11 +96,24 @@ export function Tabela() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={linha.number}>
                                     {colunas.map((col) => {
                                         const value = linha[col.id];
-                                        return (
-                                            <TableCell key={col.id} align={col.align}>
-                                                {col.format ? col.format(value) : value}
-                                            </TableCell>
-                                        );
+                                            let color = '';
+                                            if (col.id === 'numero') {
+                                                if (value % 2 == 0) {
+                                                    color = ''
+                                                } else {
+                                                    color = '#00c521'
+                                                }
+                                            } 
+                                            return (
+                                                <TableCell 
+                                                style={{backgroundColor: color}}
+                                                key={col.id} 
+                                                align={col.align}
+                                                >
+                                                    {col.format ? col.format(value) : value}
+                                                </TableCell>
+                                            );
+                                        
                                     })}
                                 </TableRow>
                             );

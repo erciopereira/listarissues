@@ -105,6 +105,10 @@ export function Home() {
                             <span>{ultimaAtualizacao}</span>
                         </div>
                     </div>
+                    <div style={{display: 'flex', alignItems: 'center', padding: '10px'}}>
+                        <div style={{height: '15px', width: '15px', backgroundColor: '#00c521', marginRight: '5px'}} />
+                        <span>Issues com número ímpar</span>
+                    </div>
                     {mensagemErroRequisicao !== '' ? (
                         <div>
                             {mensagemErroRequisicao}

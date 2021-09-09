@@ -17,8 +17,8 @@ export function Filtros() {
 
     const [filtroStatusSelecionado, setFiltroStatusSelecionado] = useState('');
     const [filtroLabelsSelecionado, setFiltroLabelsSelecionado] = useState('');
-    const [dadosFiltroStatus, setDadosFiltroStatus] = useState([]);
-    const [dadosFiltroLabels, setDadosFiltroLabels] = useState([]);
+    const [filtroSalvoStatus, setFiltroSalvoStatus] = useState([]);
+    const [filtroSalvoLabels, setFiltroSalvoLabels] = useState([]);
     const [filtroLabels, setFiltroLabels] = useState([]);
 
     useEffect(() => {
@@ -42,15 +42,7 @@ export function Filtros() {
         }
     }
 
-    const selecionarFiltroStatus = (status, filtro, cor) => {
-        setFiltroStatusSelecionado({ texto: filtro, color: cor });
-        abrirFecharModalFiltro();
-        let filtrar;
-        if (dadosFiltroLabels.length > 0) {
-            filtrar = dadosFiltroLabels.filter((item) => item.status === status);
-        } else {
-            filtrar = dadosIssuesReducer.filter((item) => item.status === status);
-        }
+    const executarFiltro = (filtrar) => {
         if (filtrar.length === 0) {
             dispatch({
                 type: 'SET_SEM_DADOS_FILTRO',
@@ -62,66 +54,68 @@ export function Filtros() {
                 payload: false,
             });
         }
-        setDadosFiltroStatus(filtrar)
         dispatch({
             type: 'SET_FILTRO_ISSUES',
             payload: filtrar,
         });
+    }
+
+    const selecionarFiltroStatus = (status, filtro, cor) => {
+        setFiltroStatusSelecionado({ texto: filtro, color: cor });
+        abrirFecharModalFiltro();
+        const filtrarStatus = dadosIssuesReducer.filter((item) => item.status === status);
+        setFiltroSalvoStatus(filtrarStatus);
+
+        if (filtroSalvoLabels.length > 0) {
+            const filtrar = filtroSalvoLabels.filter((item) => item.status === status);
+            executarFiltro(filtrar);
+        } else {
+            executarFiltro(filtrarStatus);
+        }
     }
 
     const selecionarFiltroLabels = (label, cor) => {
         setFiltroLabelsSelecionado({ texto: label, color: cor });
         abrirFecharModalFiltro();
-        let filtrar;
-        if (dadosFiltroStatus.length > 0) {
-            filtrar = dadosFiltroStatus.filter((item) => item.label === label);
+        const filtrarLabels = dadosIssuesReducer.filter((item) => item.label === label);
+        setFiltroSalvoLabels(filtrarLabels)
+
+        if (filtroSalvoStatus.length > 0) {
+            const filtrar = filtroSalvoStatus.filter((item) => item.label === label);
+            executarFiltro(filtrar);
         } else {
-            filtrar = dadosIssuesReducer.filter((item) => item.label === label);
+            executarFiltro(filtrarLabels);
         }
-        if (filtrar.length === 0) {
-            dispatch({
-                type: 'SET_SEM_DADOS_FILTRO',
-                payload: true,
-            });
-        } else {
-            dispatch({
-                type: 'SET_SEM_DADOS_FILTRO',
-                payload: false,
-            });
-        }
-        setDadosFiltroLabels(filtrar);
+    }
+
+    const limparTodosOsFiltros = () => {
+        dispatch({
+            type: 'SET_SEM_DADOS_FILTRO',
+            payload: false,
+        });
         dispatch({
             type: 'SET_FILTRO_ISSUES',
-            payload: filtrar,
+            payload: dadosIssuesReducer,
         });
     }
 
     const limparFiltro = (tipoFiltro) => {
         if (tipoFiltro === 'status') {
-            setDadosFiltroStatus([]);
             setFiltroStatusSelecionado('');
-            if (filtroLabelsSelecionado === '') {
-                dispatch({
-                    type: 'SET_FILTRO_ISSUES',
-                    payload: [],
-                });
-                dispatch({
-                    type: 'SET_SEM_DADOS_FILTRO',
-                    payload: false,
-                });
+            if (filtroSalvoLabels.length > 0) {
+                executarFiltro(filtroSalvoLabels);
             } else {
-                dispatch({
-                    type: 'SET_FILTRO_ISSUES',
-                    payload: dadosFiltroLabels,
-                });
-                dispatch({
-                    type: 'SET_SEM_DADOS_FILTRO',
-                    payload: false,
-                });
+                limparTodosOsFiltros();
             }
+            setFiltroSalvoStatus([]);
         } else {
-            setDadosFiltroLabels([]);
             setFiltroLabelsSelecionado('');
+            if (filtroSalvoStatus.length > 0) {
+                executarFiltro(filtroSalvoStatus);
+            } else {
+                limparTodosOsFiltros();
+            }
+            setFiltroSalvoLabels([]);
         }
     }
 
