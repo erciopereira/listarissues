@@ -12,11 +12,4 @@ export const Container = styled.div`
        align-items: center;
        justify-content: center;
     }
-    .area-cabecalho {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px;
-    }
-    
 `

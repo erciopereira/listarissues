@@ -66,15 +66,12 @@ export function Tabela() {
         setPagina(0);
     }
 
-    const number = 956
-    if (number % 2 == 0) {
-        console.log("Par")
-    } else {
-        console.log('impar')
-    }
-
     return (
         <>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+                <div style={{ height: '15px', width: '15px', backgroundColor: '#00c521', marginRight: '5px' }} />
+                <span>Issues com número ímpar</span>
+            </div>
             <TableContainer style={{ height: 'calc(100vh - 165px)' }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -96,24 +93,24 @@ export function Tabela() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={linha.number}>
                                     {colunas.map((col) => {
                                         const value = linha[col.id];
-                                            let color = '';
-                                            if (col.id === 'numero') {
-                                                if (value % 2 == 0) {
-                                                    color = ''
-                                                } else {
-                                                    color = '#00c521'
-                                                }
-                                            } 
-                                            return (
-                                                <TableCell 
-                                                style={{backgroundColor: color}}
-                                                key={col.id} 
+                                        let color = '';
+                                        if (col.id === 'numero') {
+                                            if (value % 2 == 0) {
+                                                color = ''
+                                            } else {
+                                                color = '#00c521'
+                                            }
+                                        }
+                                        return (
+                                            <TableCell
+                                                style={{ backgroundColor: color }}
+                                                key={col.id}
                                                 align={col.align}
-                                                >
-                                                    {col.format ? col.format(value) : value}
-                                                </TableCell>
-                                            );
-                                        
+                                            >
+                                                {col.format ? col.format(value) : value}
+                                            </TableCell>
+                                        );
+
                                     })}
                                 </TableRow>
                             );

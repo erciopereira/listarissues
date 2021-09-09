@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
-import useApi from '../../consultaAPI/API';
 import { Container } from './styles';
 import { Tabela } from '../../Components/Tabela';
-import { Filtros } from '../../Components/Filtros';
+import { Header } from '../../Components/Header';
+import { buscarDados } from '../../Components/BuscarDados/buscarDados';
 
 export function Home() {
-    const api = useApi();
     const dispatch = useDispatch();
 
-    const mensagemErroRequisicao = useSelector(
-        state => state.ListaIssuesReducer.erroBuscaIssues
+    const atualizarDadosReducer = useSelector(
+        state => state.AtualizarDadosReducer.atualizarDados
     );
 
     const dadosLocalStorage = JSON.parse(
@@ -21,62 +20,28 @@ export function Home() {
         localStorage.getItem('dataUltimaAtualizacao')
     )
     
-    const [ultimaAtualizacao, setUltimaAtualizacao] = useState('');
     const [carregando, setCarregando] = useState(true);
-    const [atualizarDados, setAtualizarDados] = useState(false);
 
     useEffect(() => {
         const buscarDadosApi = async () => {
-            setCarregando(true);
-            const montarDadosIssues = [];
-            let numeroPagina = 1;
-            while (numeroPagina > 0) {
-                const listarIssues = async (numeroPagina) => {
-                    const getIssues = await api.getListaIssues(numeroPagina);
-                    if (getIssues.erro !== '') {
-                        if (getIssues.erro.status === 403) {
-                            dispatch({
-                                type: 'SET_MENSAGEM_ERRO',
-                                payload: 'O limite de requisições foi excedido',
-                            });
-                        }
-                        return ([])
-                    } else {
-                        return (getIssues.res)
-                    }
-                }
-
-                const resultadoDadosApi = await listarIssues(numeroPagina);
-
-                resultadoDadosApi.forEach((item) => {
-                    montarDadosIssues.push({
-                        numero: item.number,
-                        status: item.state,
-                        descricao: item.title,
-                        label: item.labels.length > 0 ? item.labels[0].name : '',
-                        dataCriacao: item.created_at,
-                        dataAlteracao: item.updated_at
-                    });
-                });
-                if (resultadoDadosApi.length > 0) {
-                    numeroPagina = numeroPagina + 1
-                } else {
-                    numeroPagina = 0
-                }
-            }
-            setCarregando(false);
+            const retornoDados = await buscarDados();
             dispatch({
                 type: 'SET_LISTA_ISSUES',
-                payload: montarDadosIssues,
+                payload: retornoDados,
             });
             localStorage.setItem('dataUltimaAtualizacao', JSON.stringify(new Date()));
-            localStorage.setItem('dadosIssues', JSON.stringify(montarDadosIssues));
+            localStorage.setItem('dadosIssues', JSON.stringify(retornoDados));
             const now = new Date();
-            setUltimaAtualizacao(`${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`)
+            dispatch({
+                type: 'SET_ULTIMA_ATUALIZACAO',
+                payload: `${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`,
+            });
+            setCarregando(false);
         }
 
-        if (dadosLocalStorage === null || atualizarDados) {
-            buscarDadosApi()
+        if (dadosLocalStorage === null || atualizarDadosReducer) {
+            setCarregando(true);
+            buscarDadosApi();
         } else {
             dispatch({
                 type: 'SET_LISTA_ISSUES',
@@ -84,9 +49,12 @@ export function Home() {
             });
             setCarregando(false);
             const now = new Date(pegarUltimaAtualizacao);
-            setUltimaAtualizacao(`${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`)
+            dispatch({
+                type: 'SET_ULTIMA_ATUALIZACAO',
+                payload: `${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`,
+            });
         }
-    }, [atualizarDados])
+    }, [atualizarDadosReducer])
 
     return (
         <Container>
@@ -97,25 +65,8 @@ export function Home() {
                 </div>
             ) : (
                 <>
-                    <div className="area-cabecalho">
-                        <Filtros />
-                        <button onClick={() => setAtualizarDados(true)}>Atualizar dados</button>
-                        <div>
-                            <span>Última atualização: </span>
-                            <span>{ultimaAtualizacao}</span>
-                        </div>
-                    </div>
-                    <div style={{display: 'flex', alignItems: 'center', padding: '10px'}}>
-                        <div style={{height: '15px', width: '15px', backgroundColor: '#00c521', marginRight: '5px'}} />
-                        <span>Issues com número ímpar</span>
-                    </div>
-                    {mensagemErroRequisicao !== '' ? (
-                        <div>
-                            {mensagemErroRequisicao}
-                        </div>
-                    ) : (
-                        <Tabela />
-                    )}
+                    <Header />
+                    <Tabela />
                 </>
             )}
         </Container>

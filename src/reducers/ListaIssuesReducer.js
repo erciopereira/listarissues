@@ -13,8 +13,6 @@ export function ListaIssuesReducer(state = initialState, action) {
             return { ...state, filtroIssues: action.payload };
         case 'SET_SEM_DADOS_FILTRO':
             return { ...state, semDadosFiltro: action.payload };
-        case 'SET_MENSAGEM_ERRO':
-            return { ...state, erroBuscaIssues: action.payload };
         default:
             return state;
     }
