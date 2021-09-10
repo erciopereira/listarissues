@@ -39,6 +39,6 @@ Toda a manipulação desses filtros é feita com os dados salvos em localstorage
 Para atualizar os dados, basta clicar no botão que se encontrar na parte superior da tela. Ao lado é apresentada a data e hora da última atualização.
 
 ## Publicação
-O projeto foi publicado Netlify e integrado com o github para build contínuo.
+O projeto foi publicado no Netlify e integrado com o github para build contínuo.
 
 Disponível em: https://listarissues.netlify.app/
