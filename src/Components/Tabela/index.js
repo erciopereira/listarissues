@@ -15,6 +15,7 @@ const colunas = [
     { id: 'numero', label: 'Numero', align: 'left', },
     { id: 'status', label: 'Status' },
     { id: 'descricao', label: 'Descrição', minWidth: 170 },
+    { id: 'numeroComentarios', label: 'Número de comentários'},
     { id: 'label', label: 'Etiqueta' },
     {
         id: 'dataCriacao',
@@ -43,12 +44,18 @@ export function Tabela() {
         state => state.ListaIssuesReducer.filtroIssues
     );
 
+    const semDadosFiltroReducer = useSelector(
+        state => state.ListaIssuesReducer.semDadosFiltro
+    );
+
     useEffect(() => {
-        if (filtroIssuesReducer.length > 0) {
+        if (filtroIssuesReducer.length > 0 ||
+            (filtroIssuesReducer.length === 0 && semDadosFiltroReducer)) {
             setDataIssues(filtroIssuesReducer);
         } else {
             setDataIssues(dadosIssuesReducer);
         }
+        setPagina(0);
     }, [dadosIssuesReducer, filtroIssuesReducer])
 
     const alterarPagina = (event, novaPagina) => {
@@ -62,7 +69,11 @@ export function Tabela() {
 
     return (
         <>
-            <TableContainer style={{ minHeight: '600px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+                <div style={{ height: '15px', width: '15px', backgroundColor: '#00c521', marginRight: '5px' }} />
+                <span>Issues com número ímpar</span>
+            </div>
+            <TableContainer style={{ height: 'calc(100vh - 165px)' }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -83,11 +94,24 @@ export function Tabela() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={linha.number}>
                                     {colunas.map((col) => {
                                         const value = linha[col.id];
+                                        let color = '';
+                                        if (col.id === 'numero') {
+                                            if (value % 2 == 0) {
+                                                color = ''
+                                            } else {
+                                                color = '#00c521'
+                                            }
+                                        }
                                         return (
-                                            <TableCell key={col.id} align={col.align}>
+                                            <TableCell
+                                                style={{ backgroundColor: color }}
+                                                key={col.id}
+                                                align={col.align}
+                                            >
                                                 {col.format ? col.format(value) : value}
                                             </TableCell>
                                         );
+
                                     })}
                                 </TableRow>
                             );

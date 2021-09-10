@@ -1,6 +1,7 @@
 const initialState = {
     listaIssues: [],
     filtroIssues: [],
+    semDadosFiltro: false,
     erroBuscaIssues: '',
 };
 
@@ -10,8 +11,8 @@ export function ListaIssuesReducer(state = initialState, action) {
             return { ...state, listaIssues: action.payload };
         case 'SET_FILTRO_ISSUES':
             return { ...state, filtroIssues: action.payload };
-        case 'SET_MENSAGEM_ERRO':
-            return { ...state, erroBuscaIssues: action.payload };
+        case 'SET_SEM_DADOS_FILTRO':
+            return { ...state, semDadosFiltro: action.payload };
         default:
             return state;
     }
