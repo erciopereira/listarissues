@@ -40,4 +40,5 @@ Para atualizar os dados, basta clicar no botão que se encontrar na parte superi
 
 ## Publicação
 O projeto foi publicado Netlify e integrado com o github para build contínuo.
+
 Disponível em: https://listarissues.netlify.app/
