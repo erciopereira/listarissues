@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Desafio FrontEnd
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O desafio consiste em criar uma listagem com as issues do repositório https://github.com/reactjs/reactjs.org/issues e contempla as seguinte funcionalidades:
+- Listagem de todas as issues;
+- Filtros para status (aberto/fechado);
+- Filtros para labels;
+- Destaque para issues de número ímpar;
+- Paginação.
 
-## Available Scripts
+## Principais tecnologias, bibliotecas e frameworks utilizadas
 
-In the project directory, you can run:
+- **create-react-app** - para start do projeto
+- **MaterialUI** - para construção da tabela com a listagem
+- **react-router-dom** para controle de rotas;
+- **styled-components** para estilização de componentes;
+- **redux** para gerenciar estados;
+- **axios** para consumo de api;
 
-### `yarn start`
+## Resumo técnico e funcionalidades do projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Resumo técnico
+Para apresentar todas as issues, foi necessário criar uma interação para fazer várias requisições, visto que o limite de retorno de dados é de no máximo 100 itens por requisição.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Existe também uma limitação de requisições que um ip pode fazer. Sendo assim, os dados são salvos em localstorage para que o usuário consiga manipular as informações sem precisar fazer requisições descenessárias e mesmo que o limite tenha sido ultrapassado.
 
-### `yarn test`
+### Funcionalidades
+Quando o aplicativo é acessado pela primeira vez, ele demora um pouco para carregar os dados por conta das requisições citadas anteriormente.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Assim que o dados são carregados, um tabela com a listagem das issues é apresentada.
 
-### `yarn build`
+Na tabela é possível navegar entre as páginas que apresentam por padrão 10 itens por página.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+As issues de número ímpar são destacadas pela por uma cor com tonalidade verde.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+É possível filtrar as issues pelo status e pela label simultaneamente. Esse filtros se encontrarm no canto superior esquerdo, clicando no ícone que representa a filtro.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Toda a manipulação desses filtros é feita com os dados salvos em localstorage.
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Para atualizar os dados, basta clicar no botão que se encontrar na parte superior da tela. Ao lado é apresentada a data e hora da última atualização.

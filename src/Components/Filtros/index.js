@@ -25,10 +25,20 @@ export function Filtros() {
         const listaLabels = []
         const buscarLabels = async () => {
             const getLabels = await api.getListaLabels();
-            getLabels.res.forEach(item => {
-                listaLabels.push({ name: item.name, color: item.color })
-            });
-            setFiltroLabels(listaLabels)
+            if (getLabels.erro.status === 403) {
+                dispatch({
+                    type: 'SET_MENSAGEM_ERRO',
+                    payload: 'O limite de requisições foi excedido. Você poderá atualizar os dados novamente daqui 1 hora.',
+                });
+                const pegarDadosLabelLocal = JSON.parse(localStorage.getItem('dadosLabels'));
+                setFiltroLabels(pegarDadosLabelLocal);
+            } else {
+                getLabels.res.forEach(item => {
+                    listaLabels.push({ name: item.name, color: item.color })
+                });
+                localStorage.setItem('dadosLabels', JSON.stringify(getLabels));
+                setFiltroLabels(listaLabels)
+            }
         }
         buscarLabels()
     }, [])

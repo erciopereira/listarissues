@@ -13,29 +13,50 @@ export function Home() {
         state => state.AtualizarDadosReducer.atualizarDados
     );
 
+    const mensagemErroReducer = useSelector(
+        state => state.MensagemErroReducer.mensagemErro
+    );
+
     const dadosLocalStorage = JSON.parse(
         localStorage.getItem('dadosIssues')
     );
     const pegarUltimaAtualizacao = JSON.parse(
         localStorage.getItem('dataUltimaAtualizacao')
     )
-    
+
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
         const buscarDadosApi = async () => {
             const retornoDados = await buscarDados();
-            dispatch({
-                type: 'SET_LISTA_ISSUES',
-                payload: retornoDados,
-            });
-            localStorage.setItem('dataUltimaAtualizacao', JSON.stringify(new Date()));
-            localStorage.setItem('dadosIssues', JSON.stringify(retornoDados));
-            const now = new Date();
-            dispatch({
-                type: 'SET_ULTIMA_ATUALIZACAO',
-                payload: `${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`,
-            });
+            console.log(retornoDados);
+            if (retornoDados[0] === 403) {
+                dispatch({
+                    type: 'SET_MENSAGEM_ERRO',
+                    payload: 'O limite de requisições foi excedido. Você poderá atualizar os dados novamente daqui 1 hora.',
+                });
+                dispatch({
+                    type: 'SET_LISTA_ISSUES',
+                    payload: dadosLocalStorage,
+                });
+                const now = new Date(pegarUltimaAtualizacao);
+                dispatch({
+                    type: 'SET_ULTIMA_ATUALIZACAO',
+                    payload: `${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`,
+                });
+            } else {
+                dispatch({
+                    type: 'SET_LISTA_ISSUES',
+                    payload: retornoDados,
+                });
+                localStorage.setItem('dataUltimaAtualizacao', JSON.stringify(new Date()));
+                localStorage.setItem('dadosIssues', JSON.stringify(retornoDados));
+                const now = new Date();
+                dispatch({
+                    type: 'SET_ULTIMA_ATUALIZACAO',
+                    payload: `${now.toLocaleDateString('pt-br')} ${now.toLocaleTimeString('pt-br')}`,
+                });
+            }
             setCarregando(false);
         }
 
@@ -65,6 +86,9 @@ export function Home() {
                 </div>
             ) : (
                 <>
+                    {mensagemErroReducer !== '' &&
+                        <div style={{ textAlign: 'center' }}>{mensagemErroReducer}</div>
+                    }
                     <Header />
                     <Tabela />
                 </>

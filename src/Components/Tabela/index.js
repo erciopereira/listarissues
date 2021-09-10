@@ -15,6 +15,7 @@ const colunas = [
     { id: 'numero', label: 'Numero', align: 'left', },
     { id: 'status', label: 'Status' },
     { id: 'descricao', label: 'Descrição', minWidth: 170 },
+    { id: 'numeroComentarios', label: 'Número de comentários'},
     { id: 'label', label: 'Etiqueta' },
     {
         id: 'dataCriacao',
