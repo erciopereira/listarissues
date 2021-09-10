@@ -31,12 +31,16 @@ export function Filtros() {
                     payload: 'O limite de requisições foi excedido. Você poderá atualizar os dados novamente daqui 1 hora.',
                 });
                 const pegarDadosLabelLocal = JSON.parse(localStorage.getItem('dadosLabels'));
-                setFiltroLabels(pegarDadosLabelLocal);
+                if (pegarDadosLabelLocal === null) {
+                    setFiltroLabels([]);
+                } else {
+                    setFiltroLabels(pegarDadosLabelLocal);
+                }
             } else {
                 getLabels.res.forEach(item => {
                     listaLabels.push({ name: item.name, color: item.color })
                 });
-                localStorage.setItem('dadosLabels', JSON.stringify(getLabels));
+                localStorage.setItem('dadosLabels', JSON.stringify(getLabels.res));
                 setFiltroLabels(listaLabels)
             }
         }
@@ -128,7 +132,7 @@ export function Filtros() {
             setFiltroSalvoLabels([]);
         }
     }
-
+console.log(filtroLabels);
     return (
         <Container className="area-filtros">
             <IconeFiltro style={{ cursor: 'pointer' }} onClick={() => abrirFecharModalFiltro()} />
