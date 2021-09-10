@@ -7,7 +7,7 @@ O desafio consiste em criar uma listagem com as issues do repositório https://g
 - Destaque para issues de número ímpar;
 - Paginação.
 
-## Principais tecnologias, bibliotecas e frameworks utilizadas
+## Principais tecnologias, bibliotecas e frameworks utilizados
 
 - **create-react-app** - para start do projeto
 - **MaterialUI** - para construção da tabela com a listagem
@@ -37,3 +37,7 @@ As issues de número ímpar são destacadas pela por uma cor com tonalidade verd
 Toda a manipulação desses filtros é feita com os dados salvos em localstorage.
 
 Para atualizar os dados, basta clicar no botão que se encontrar na parte superior da tela. Ao lado é apresentada a data e hora da última atualização.
+
+## Publicação
+O projeto foi publicado Netlify e integrado com o github para build contínuo.
+Disponível em: https://listarissues.netlify.app/
