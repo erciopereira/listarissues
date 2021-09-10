@@ -11,10 +11,10 @@ O desafio consiste em criar uma listagem com as issues do repositório https://g
 
 - **create-react-app** - para start do projeto
 - **MaterialUI** - para construção da tabela com a listagem
-- **react-router-dom** para controle de rotas;
-- **styled-components** para estilização de componentes;
-- **redux** para gerenciar estados;
-- **axios** para consumo de api;
+- **react-router-dom** - para controle de rotas;
+- **styled-components** - para estilização de componentes;
+- **redux** - para gerenciar estados;
+- **axios** - para consumo de api;
 
 ## Resumo técnico e funcionalidades do projeto
 
