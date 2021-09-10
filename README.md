@@ -21,7 +21,7 @@ O desafio consiste em criar uma listagem com as issues do repositório https://g
 ### Resumo técnico
 Para apresentar todas as issues, foi necessário criar uma interação para fazer várias requisições, visto que o limite de retorno de dados é de no máximo 100 itens por requisição.
 
-Existe também uma limitação de requisições que um ip pode fazer. Sendo assim, os dados são salvos em localstorage para que o usuário consiga manipular as informações sem precisar fazer requisições descenessárias e mesmo que o limite tenha sido ultrapassado.
+Existe também uma limitação de requisições que um ip pode fazer. Sendo assim, os dados são salvos em localstorage para que o usuário consiga manipular as informações sem precisar fazer requisições descenessárias e para poder ter acesso mesmo que o limite tenha sido ultrapassado.
 
 ### Funcionalidades
 Quando o aplicativo é acessado pela primeira vez, ele demora um pouco para carregar os dados por conta das requisições citadas anteriormente.
