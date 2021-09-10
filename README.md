@@ -30,7 +30,7 @@ Assim que o dados são carregados, um tabela com a listagem das issues é aprese
 
 Na tabela é possível navegar entre as páginas que apresentam por padrão 10 itens por página.
 
-As issues de número ímpar são destacadas pela por uma cor com tonalidade verde.
+As issues de número ímpar são destacadas por uma cor com tonalidade verde.
 
 É possível filtrar as issues pelo status e pela label simultaneamente. Esse filtros se encontrarm no canto superior esquerdo, clicando no ícone que representa a filtro.
 
